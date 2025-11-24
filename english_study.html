@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>英语学习小网页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card-bg: #ffffff;
+      --accent: #4f46e5;
+      --accent-light: #e0e7ff;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --border-soft: #e5e7eb;
+      --danger: #dc2626;
+      --success: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      padding: 20px 16px 32px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.35);
+    }
+
+    header .title {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: #e5e7eb;
+    }
+
+    main {
+      max-width: 960px;
+      margin: -24px auto 24px;
+      padding: 0 12px 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1.7fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 18px 16px 16px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-soft);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .card-sub {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .word-main {
+      margin-top: 4px;
+      margin-bottom: 10px;
+    }
+
+    .word-en {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .phonetic {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      font-style: italic;
+    }
+
+    .word-cn {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .word-tag {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: var(--accent-light);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+    }
+
+    .examples {
+      font-size: 0.9rem;
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px dashed var(--border-soft);
+    }
+
+    .examples p {
+      margin-bottom: 4px;
+    }
+
+    .examples p:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-soft);
+      color: var(--text-main);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-sub);
+      padding-inline: 4px;
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: #f3f4f6;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    .quiz-question {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .quiz-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-btn {
+      width: 100%;
+      justify-content: center;
+      background: #f3f4f6;
+    }
+
+    .quiz-result {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      min-height: 22px;
+    }
+
+    .quiz-result.correct {
+      color: var(--success);
+    }
+
+    .quiz-result.wrong {
+      color: var(--danger);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      padding: 8px 10px;
+      font-size: 0.88rem;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+      background: #f9fafb;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-light);
+      background: #ffffff;
+    }
+
+    .sentence-key {
+      font-size: 0.9rem;
+      background: #eff6ff;
+      border-radius: 10px;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      border: 1px solid #dbeafe;
+    }
+
+    .sentence-key span {
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    .sentence-answer {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      padding: 8px 0 20px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="title">
+    <h1>📚 英语学习小站</h1>
+    <p>每天背一点单词，做一点小练习，让英语悄悄进步。</p>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <!-- 左侧：单词卡片 + 造句练习 -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            🎯 今日单词卡
+            <span class="badge">Vocabulary</span>
+          </div>
+          <div class="card-sub">点击「换一个」随便抽一个单词练习。</div>
+        </div>
+        <button class="btn-ghost" id="btn-refresh-word" title="随机单词">
+          🔄 换一个
+        </button>
+      </div>
+
+      <div class="word-main">
+        <div class="word-en" id="word-en">compact</div>
+        <div class="phonetic" id="word-phonetic">/kəmˈpækt/</div>
+        <div class="word-cn" id="word-cn">紧凑的，小巧的</div>
+        <div class="word-tag" id="word-tag">形容词 · 描述物品</div>
+      </div>
+
+      <div class="section-label">例句 · Example</div>
+      <div class="examples">
+        <p id="example-en">The gadget is compact and portable, so you can take it anywhere.</p>
+        <p id="example-cn">这个小工具紧凑便携，你可以随身携带。</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" id="btn-speak-word">🔊 读单词</button>
+        <button class="btn-outline" id="btn-speak-sentence">🔊 读例句</button>
+      </div>
+
+      <hr style="margin: 14px 0; border: none; border-top: 1px dashed #e5e7eb;">
+
+      <div class="card-header" style="margin-bottom: 8px;">
+        <div>
+          <div class="card-title">
+            ✏️ 跟我造句
+            <span class="badge">Writing</span>
+          </div>
+          <div class="card-sub">用上面的单词，写一句自己的英文句子。</div>
+        </div>
+      </div>
+
+      <div class="section-label">提示 · 可以参考结构</div>
+      <div class="sentence-key" id="sentence-key">
+        <span>结构：The + 名词 + is + 形容词.</span>
+        <span>例：The room is compact and comfortable.</span>
+      </div>
+
+      <textarea id="sentence-input" placeholder="试着用英文写一句话（可以混一点中文，不要有压力）"></textarea>
+      <div class="btn-row" style="margin-top: 8px;">
+        <button class="btn-outline" id="btn-show-sample">💡 看示范句</button>
+        <button class="btn-outline" id="btn-clear-sentence">🧹 清空</button>
+        <button class="btn-outline" id="btn-speak-my-sentence">🔊 读我写的句子</button>
+      </div>
+      <div class="sentence-answer" id="sentence-answer">
+        示例句：The device is compact and portable, so it is perfect for travel.
+      </div>
+    </section>
+
+    <!-- 右侧：选择题小测 -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            ✅ 小测验：选单词
+            <span class="badge">Quiz</span>
+          </div>
+          <div class="card-sub">根据中文意思，选择正确的英文单词。</div>
+        </div>
+        <button class="btn-ghost" id="btn-new-question" title="新题目">
+          ➕ 新题目
+        </button>
+      </div>
+
+      <div class="quiz-question" id="quiz-question">
+        哪个英文单词对应下面的中文意思？<br>
+        <strong>紧凑的，小巧的；便于携带的</strong>
+      </div>
+
+      <div class="quiz-options" id="quiz-options">
+        <!-- JS 动态生成选项 -->
+      </div>
+
+      <div class="quiz-result" id="quiz-result"></div>
+
+      <div class="btn-row" style="margin-top: 10px;">
+        <button class="btn-outline" id="btn-show-explain">📘 显示中文解释</button>
+        <button class="btn-outline" id="btn-speak-question">🔊 读题目</button>
+      </div>
+
+      <div class="section-label" style="margin-top: 10px;">小贴士</div>
+      <p style="font-size: 0.8rem; color: var(--text-sub);">
+        不用追求一次就记住，多看几遍、多做几次小测，大脑会慢慢“帮你背单词”。😉
+      </p>
+    </section>
+  </div>
+
+  <!-- 底部：小计划 -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          🌱 学习小计划
+          <span class="badge">Daily Plan</span>
+        </div>
+        <div class="card-sub">可以按这个节奏来：5 分钟单词 + 5 分钟小测 + 5 分钟造句。</div>
+      </div>
+    </div>
+    <ul style="font-size: 0.88rem; color: var(--text-sub); margin-left: 1.2em; margin-top: 4px;">
+      <li>每天随机抽 3～5 个单词，点击🔊 多听几遍发音。</li>
+      <li>每个单词至少做 1～2 次选择题，看自己能不能选对。</li>
+      <li>用单词写一句自己的句子（可以和生活、工作、学习相关）。</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  简单坚持，胜过复杂放弃。每天 10～15 分钟就很棒啦 🌟
+</footer>
+
+<script>
+  // ===== 词汇数据 =====
+  const vocabList = [
+    {
+      word: "compact",
+      phonetic: "/kəmˈpækt/",
+      cn: "紧凑的，小巧的",
+      tag: "形容词 · 描述大小",
+      exampleEn: "The gadget is compact and portable, so you can take it anywhere.",
+      exampleCn: "这个小工具紧凑便携，你可以随身携带。",
+      sentenceSample: "The device is compact and portable, so it is perfect for travel.",
+      pattern: "The + 名词 + is + 形容词."
+    },
+    {
+      word: "portable",
+      phonetic: "/ˈpɔːtəbl/",
+      cn: "便于携带的，轻便的",
+      tag: "形容词 · 描述便利",
+      exampleEn: "This speaker is light and portable, ideal for outdoor parties.",
+      exampleCn: "这个音箱轻便易携，非常适合户外聚会。",
+      sentenceSample: "The laptop is portable enough for me to carry to every class.",
+      pattern: "主语 + be + portable + enough for + 人 + to do..."
+    },
+    {
+      word: "spacious",
+      phonetic: "/ˈspeɪʃəs/",
+      cn: "宽敞的，空间大的",
+      tag: "形容词 · 描述空间",
+      exampleEn: "The living room is bright and spacious.",
+      exampleCn: "这个客厅明亮又宽敞。",
+      sentenceSample: "The office is spacious enough for ten people to work comfortably.",
+      pattern: "主语 + be + spacious enough for + 人 + to do..."
+    },
+    {
+      word: "reliable",
+      phonetic: "/rɪˈlaɪəbl/",
+      cn: "可靠的，值得信赖的",
+      tag: "形容词 · 描述人/物",
+      exampleEn: "She is a reliable colleague who always finishes her work on time.",
+      exampleCn: "她是一位可靠的同事，总能按时完成工作。",
+      sentenceSample: "This app is reliable and rarely crashes.",
+      pattern: "主语 + be + reliable and + 形容词."
+    },
+    {
+      word: "durable",
+      phonetic: "/ˈdjʊərəbl/",
+      cn: "耐用的，结实的",
+      tag: "形容词 · 描述质量",
+      exampleEn: "These shoes are durable enough for daily use.",
+      exampleCn: "这双鞋足够耐穿，适合日常使用。",
+      sentenceSample: "The battery is durable and can last for a whole day.",
+      pattern: "主语 + be + durable and can + 动词..."
+    },
+    {
+      word: "efficient",
+      phonetic: "/ɪˈfɪʃnt/",
+      cn: "高效的，效率高的",
+      tag: "形容词 · 描述效率",
+      exampleEn: "A good planner can help you work in a more efficient way.",
+      exampleCn: "一个好的计划可以帮助你以更高效的方式工作。",
+      sentenceSample: "The new machine is efficient and saves a lot of time.",
+      pattern: "主语 + be + efficient and + 动词..."
+    },
+    {
+      word: "convenient",
+      phonetic: "/kənˈviːniənt/",
+      cn: "方便的，便利的",
+      tag: "形容词 · 描述便利",
+      exampleEn: "Online shopping is convenient for busy people.",
+      exampleCn: "网购对忙碌的人来说很方便。",
+      sentenceSample: "It is convenient for me to study English on this website.",
+      pattern: "It is convenient for + 人 + to do..."
+    },
+    {
+      word: "versatile",
+      phonetic: "/ˈvɜːsətaɪl/",
+      cn: "多功能的，多才多艺的",
+      tag: "形容词 · 描述功能",
+      exampleEn: "This tool is versatile and can be used in many situations.",
+      exampleCn: "这个工具用途广泛，可以用在很多场景。",
+      sentenceSample: "The tablet is versatile enough for both work and entertainment.",
+      pattern: "主语 + be + versatile enough for + 名词."
+    }
+  ];
+
+  // ===== 工具函数 =====
+  function randomIndex(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function speakText(text, lang = "en-US") {
+    if (!("speechSynthesis" in window)) {
+      alert("当前浏览器不支持语音朗读功能（speechSynthesis）。");
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang;
+    window.speechSynthesis.cancel(); // 防止叠加
+    window.speechSynthesis.speak(utter);
+  }
+
+  // ===== 单词卡逻辑 =====
+  let lastWordIndex = -1;
+  let currentWord = vocabList[0];
+
+  function renderWordCard(wordObj) {
+    currentWord = wordObj;
+
+    document.getElementById("word-en").textContent = wordObj.word;
+    document.getElementById("word-phonetic").textContent = wordObj.phonetic;
+    document.getElementById("word-cn").textContent = wordObj.cn;
+    document.getElementById("word-tag").textContent = wordObj.tag;
+    document.getElementById("example-en").textContent = wordObj.exampleEn;
+    document.getElementById("example-cn").textContent = wordObj.exampleCn;
+    document.getElementById("sentence-key").innerHTML =
+      `<span>结构：${wordObj.pattern}</span>`;
+    document.getElementById("sentence-answer").textContent =
+      "示例句：" + wordObj.sentenceSample;
+    document.getElementById("sentence-answer").style.display = "none";
+  }
+
+  function showRandomWord() {
+    if (vocabList.length === 0) return;
+    let idx = randomIndex(vocabList.length);
+    if (vocabList.length > 1) {
+      while (idx === lastWordIndex) {
+        idx = randomIndex(vocabList.length);
+      }
+    }
+    lastWordIndex = idx;
+    renderWordCard(vocabList[idx]);
+  }
+
+  // ===== 测验逻辑 =====
+  let currentQuizCorrect = null;
+
+  function renderQuizQuestion() {
+    if (vocabList.length === 0) return;
+
+    const correctIdx = randomIndex(vocabList.length);
+    const correctItem = vocabList[correctIdx];
+    currentQuizCorrect = correctItem;
+
+    const q = document.getElementById("quiz-question");
+    q.innerHTML =
+      `哪个英文单词对应下面的中文意思？<br><strong>${correctItem.cn}</strong>`;
+
+    // 选项索引集合：包含正确 + 3 个随机错误
+    const indices = new Set([correctIdx]);
+    while (indices.size < Math.min(4, vocabList.length)) {
+      indices.add(randomIndex(vocabList.length));
+    }
+
+    const optionIndices = shuffleArray(Array.from(indices));
+    const optionsContainer = document.getElementById("quiz-options");
+    optionsContainer.innerHTML = "";
+
+    optionIndices.forEach(idx => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.textContent = vocabList[idx].word;
+      btn.addEventListener("click", () => {
+        handleQuizAnswer(vocabList[idx], correctItem);
+      });
+      optionsContainer.appendChild(btn);
+    });
+
+    const result = document.getElementById("quiz-result");
+    result.textContent = "";
+    result.className = "quiz-result";
+  }
+
+  function handleQuizAnswer(chosenItem, correctItem) {
+    const result = document.getElementById("quiz-result");
+    if (chosenItem.word === correctItem.word) {
+      result.textContent = "✅ 回答正确！" + `「${correctItem.word}」就是这个意思～`;
+      result.className = "quiz-result correct";
+    } else {
+      result.textContent =
+        `❌ 这次选错啦。正确答案是「${correctItem.word}」。多看几遍就记住了！`;
+      result.className = "quiz-result wrong";
+    }
+  }
+
+  // ===== 造句区事件 =====
+  function initSentenceArea() {
+    const btnShowSample = document.getElementById("btn-show-sample");
+    const btnClear = document.getElementById("btn-clear-sentence");
+    const btnSpeakMySentence = document.getElementById("btn-speak-my-sentence");
+    const sentenceAnswer = document.getElementById("sentence-answer");
+    const input = document.getElementById("sentence-input");
+
+    btnShowSample.addEventListener("click", () => {
+      if (sentenceAnswer.style.display === "none" || sentenceAnswer.style.display === "") {
+        sentenceAnswer.style.display = "block";
+      } else {
+        sentenceAnswer.style.display = "none";
+      }
+    });
+
+    btnClear.addEventListener("click", () => {
+      input.value = "";
+    });
+
+    btnSpeakMySentence.addEventListener("click", () => {
+      const text = input.value.trim();
+      if (!text) {
+        alert("先写一句英文句子再朗读哦～");
+        return;
+      }
+      speakText(text, "en-US");
+    });
+  }
+
+  // ===== 初始化 =====
+  document.addEventListener("DOMContentLoaded", () => {
+    // 初始单词 & 句子
+    renderWordCard(vocabList[0]);
+    initSentenceArea();
+
+    // 按钮事件
+    document.getElementById("btn-refresh-word")
+      .addEventListener("click", showRandomWord);
+
+    document.getElementById("btn-speak-word")
+      .addEventListener("click", () => {
+        speakText(currentWord.word, "en-US");
+      });
+
+    document.getElementById("btn-speak-sentence")
+      .addEventListener("click", () => {
+        speakText(currentWord.exampleEn, "en-US");
+      });
+
+    // 测验
+    document.getElementById("btn-new-question")
+      .addEventListener("click", renderQuizQuestion);
+
+    document.getElementById("btn-show-explain")
+      .addEventListener("click", () => {
+        if (!currentQuizCorrect) return;
+        alert(
+          `英文：${currentQuizCorrect.word}\n音标：${currentQuizCorrect.phonetic}\n中文：${currentQuizCorrect.cn}\n\n例句：\n${currentQuizCorrect.exampleEn}\n${currentQuizCorrect.exampleCn}`
+        );
+      });
+
+    document.getElementById("btn-speak-question")
+      .addEventListener("click", () => {
+        if (!currentQuizCorrect) return;
+        const text =
+          `Which English word matches this meaning: ${currentQuizCorrect.cn}?`;
+        speakText(text, "en-US");
+      });
+
+    // 初始生成一题
+    renderQuizQuestion();
+  });
+</script>
+</body>
+</html>
